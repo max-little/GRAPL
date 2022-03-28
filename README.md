@@ -1,7 +1,7 @@
 # GRAPL
-GRAPL: A computational library for nonparametric structural causal modelling, analysis and inference
+### GRAPL: A computational library for nonparametric structural causal modelling, analysis and inference
 
-Structural causal models (SCMs) provide a probabilistic language for describing directed relationships between random variables. SCMs are widely used in science and engineering to capture causal relationships between quantitative, measured phenomena in the real world. Two SCM formalisms, directed acyclic graphs (DAGs) and acyclic directed mixed graphs (ADMGs) have been extensively studied. In these formalisms, the conditions under which causal dependence between variables occurs is well understood. Furthermore, analytical techniques have been developed which allow manipulation of the model so as to perform causal adjustment, that is, the isolation of desired causal relationships from the SCM. The GRAPL library brings together the most important and useful of such algorithms in one convenient software package. Using this library it is possible to represent, analyze and manipulate DAGs and ADMGs of arbitrary complexity.
+*Structural causal models* (SCMs) provide a probabilistic language for describing directed relationships between random variables. SCMs are widely used in science and engineering to capture **causal relationships** between quantitative, measured phenomena in the real world. Two SCM formalisms, *directed acyclic graphs* (DAGs) and *acyclic directed mixed graphs* (ADMGs) have been extensively studied. In these formalisms, the conditions under which causal dependence between variables occurs is well understood. Furthermore, analytical techniques have been developed which allow manipulation of the model so as to perform causal adjustment, that is, the isolation of desired *causal relationships* from the SCM. The GRAPL library brings together the most important and useful of such algorithms in one convenient software package. Using this library it is possible to represent, analyze and manipulate DAGs and ADMGs of arbitrary complexity.
 
 ## Features
 - A simple text-based domain-specific language for representing both directed acyclic (DAG) and mixed, directed acyclic models (ADMGs) of interacting variables
@@ -10,11 +10,38 @@ Structural causal models (SCMs) provide a probabilistic language for describing 
 - Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, topological sorting)
 - Latex format output distributions which can be easily dropped into documents for publication
 
-(CC BY-SA 4.0) 2022. If you use this code, please cite: M.A. Little, R. Badawy, 2019, "Causal bootstrapping", arXiv:1910.09648
+(CC BY-SA 4.0) 2022. *If you use this code, please cite: [M.A. Little, R. Badawy, 2019, "Causal bootstrapping", arXiv:1910.09648](https://arxiv.org/abs/1910.09648)*
 
 ## Installation and getting started
 - Download and unzip the package to some local directory.
 - The files tutorial1.py, tutorial2.py, tutorial3.py and tutorial4.py contain demonstrations, graduated by complexity, for how to use the package.
+
+## Example
+
+Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding back-door path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
+
+```
+import grapl.algorithms as algs
+import grapl.dsl as dsl
+
+grapl_obj = dsl.GraplDSL()
+dag_grapl = ' "Front door adjustment"; \
+  X; Y; M; \
+  X -> M; \
+  M -> Y; \
+  X <-> Y; '
+G = grapl_obj.readgrapl(dag_grapl)
+```
+
+Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventional distribution (if it can be identified):
+
+```
+id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
+if isident:
+    print(id_str) $p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]$
+else:
+    print('Interventional distribution not identifiable')
+```
 
 ## Release notes, v1.3
 - Tutorial introduction to the library
