@@ -1,0 +1,10 @@
+"Bareinboim 2020, Fig. 1.8";
+A; B; C; D; E; F;
+A -> B;
+A -> F;
+A -> C;
+B -> D;
+C -> D;
+D -> E;
+B <-> D;
+C <-> E;

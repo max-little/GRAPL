@@ -1,0 +1,6 @@
+"Markov independence example";
+D; I; G; S; L;
+D -> G;
+I -> G;
+G -> L;
+I -> S;

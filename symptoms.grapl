@@ -1,0 +1,6 @@
+"Symptoms";
+Sinus; Headache; Nose; Flu; Allergy;
+Sinus -> Nose;
+Flu -> Sinus;
+Sinus -> Headache;
+Allergy -> Sinus;
