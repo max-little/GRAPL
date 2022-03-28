@@ -1,6 +1,15 @@
 # GRAPL
 GRAPL: A computational library for nonparametric structural causal modelling, analysis and inference
 
+Structural causal models (SCMs) provide a probabilistic language for describing directed relationships between random variables. SCMs are widely used in science and engineering to capture causal relationships between quantitative, measured phenomena in the real world. Two SCM formalisms, directed acyclic graphs (DAGs) and acyclic directed mixed graphs (ADMGs) have been extensively studied. In these formalisms, the conditions under which causal dependence between variables occurs is well understood. Furthermore, analytical techniques have been developed which allow manipulation of the model so as to perform causal adjustment, that is, the isolation of desired causal relationships from the SCM. The GRAPL library brings together the most important and useful of such algorithms in one convenient software package. Using this library it is possible to represent, analyze and manipulate DAGs and ADMGs of arbitrary complexity.
+
+## Features
+- A simple text-based domain-specific language for representing both directed acyclic (DAG) and mixed, directed acyclic models (ADMGs) of interacting variables
+- Derivation of factorized, marginalized nonparametric distributional models for arbitrary DAGs
+- Computation of nonparametric, causal interventional distributions in arbitrarily complex models with (ADMG) and without (DAG) hidden variables, where such an interventional distribution can be computed in principle
+- Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, topological sorting)
+- Latex format output distributions which can be easily dropped into documents for publication
+
 (CC BY-SA 4.0) 2022. If you use this code, please cite: M.A. Little, R. Badawy, 2019, "Causal bootstrapping", arXiv:1910.09648
 
 ## Installation and getting started
