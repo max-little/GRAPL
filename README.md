@@ -38,7 +38,7 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 ```
 id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
 if isident:
-    print(id_str) $p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]$
+    print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
 else:
     print('Interventional distribution not identifiable')
 ```
