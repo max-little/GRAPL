@@ -18,7 +18,7 @@
 
 ## Example
 
-Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding back-door path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
+Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
 
 ```
 import grapl.algorithms as algs
