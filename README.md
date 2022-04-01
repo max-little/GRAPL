@@ -1,5 +1,4 @@
 ![GRAPL logo](https://raw.githubusercontent.com/max-little/GRAPL/main/grapl.png)
-
 # GRAPL
 ### GRAPL: A computational library for nonparametric structural causal modelling, analysis and inference
 
