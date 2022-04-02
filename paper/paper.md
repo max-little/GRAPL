@@ -56,7 +56,7 @@ of pairs of variables) then the above guarantee no longer applies and in some ca
 even in principle, to compute an interventional distribution in order to adjust for these spurious associations [@Richardson:2012].
 The computation of exactly when adjustment is possible, and the derivation of a nonparametric, interventional
 adjustment distribution when it is possible, is addressed by several recently developed, generic algorithms
-[@Shpitser:2008; @Richardson:2017]. These computations are complex and too tedious and/or difficult to apply by hand, and require automation to be practical. However, the relevant algorithms are fairly complex and (to the author's knowledge) there are no publicly-available implementations written in widely used languages such as Python which are accessible to non-statisticians.
+[@Shpitser:2008; @Richardson:2012]. These computations are complex and too tedious and/or difficult to apply by hand, and require automation to be practical. However, the relevant algorithms are fairly complex and (to the author's knowledge) there are no publicly-available implementations written in widely used languages such as Python which are accessible to non-statisticians.
 (At the time of writing, the one possible exception to this, the R package `causaleffect`, does implement one of these algorithms,
 but does not provide the constituent, fine-grained analytical methods required to understand the topological causal structure of a given SCM).
 
