@@ -13,12 +13,24 @@
 (CC BY-SA 4.0) 2022. *If you use this code, please cite: [M.A. Little, R. Badawy, 2019, "Causal bootstrapping", arXiv:1910.09648](https://arxiv.org/abs/1910.09648)*
 
 ## Installation and getting started
-- Download and unzip the package to some local directory.
-- The files tutorial1.py, tutorial2.py, tutorial3.py and tutorial4.py contain demonstrations, graduated by complexity, for how to use the package.
 
-## Example
+We currently offer seamless installation with  `pip`. Download the current distribution of the package, and run:
+```
+pip install grapl
+```
+in the root directory of the decompressed package.
 
-Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
+Tutorials, graduated by complexity, are included as part of the package. These can be found in `grapl/tutorials`.
+To run these directly, use:
+```
+import grapl.tutorials.tutorial1 as grapl_tutor
+grapl_tutor.run()
+```
+and similarly for tutorials 2-4.
+
+## Usage example
+
+Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding back-door path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
 
 ```
 import grapl.algorithms as algs
@@ -41,6 +53,13 @@ if isident:
     print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
 else:
     print('Interventional distribution not identifiable')
+```
+
+## How to run the unit tests
+
+```
+import grapl.test.unit_tests
+grapl.test.unit_tests.run()
 ```
 
 ## Release notes, v1.3
