@@ -1,0 +1,9 @@
+"Markov independence example";
+A; B; Z; E; D;
+A -> E;
+A -> Z;
+B -> D;
+B -> Z;
+E -> D;
+Z -> D;
+Z -> E;

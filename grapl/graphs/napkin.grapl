@@ -1,0 +1,7 @@
+"Napkin graph";
+X; Z; W; Y;
+W -> Z;
+Z -> X;
+X -> Y;
+X <-> W;
+W <-> Y;

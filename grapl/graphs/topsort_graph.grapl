@@ -1,0 +1,11 @@
+"Topological sort example";
+X5; X7; X3; X11; X8; X2; X9; X10;
+X5 -> X11;
+X7 -> X11;
+X7 -> X8;
+X3 -> X8;
+X3 -> X10;
+X11 -> X2;
+X11 -> X9;
+X11 -> X10;
+X8 -> X9;

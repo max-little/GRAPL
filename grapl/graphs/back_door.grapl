@@ -1,0 +1,5 @@
+"Back door adjustment";
+X; Y; C;
+C -> X;
+X -> Y;
+C -> Y;
