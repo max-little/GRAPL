@@ -16,7 +16,7 @@
 
 We currently offer seamless installation with  `pip`. Download the current distribution of the package, and run:
 ```
-pip install grapl
+pip install .
 ```
 in the root directory of the decompressed package.
 
