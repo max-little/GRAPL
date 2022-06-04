@@ -22,8 +22,8 @@ The terminal identifiers are:
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
 
-import ply.lex as lex
-import ply.yacc as yacc
+import grapl.ply.lex as lex
+import grapl.ply.yacc as yacc
 import grapl.admg as admg
 import copy
 

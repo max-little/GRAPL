@@ -7,7 +7,6 @@ by acyclic directed mixed graphs (ADMGs).
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
 
-import grapl.admg as admg
 import grapl.expr as expr
 import grapl.util as util
 import copy as cp

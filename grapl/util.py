@@ -6,10 +6,6 @@ Various utility functions for the GRAPL library.
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
 
-import grapl.admg as admg
-import ply.lex as lex
-import ply.yacc as yacc
-
 def csepstr(nodes):
     """Create a comma-separated string for a given list of nodes."""
     return ','.join(str(s) for s in nodes)
