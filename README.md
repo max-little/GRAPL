@@ -10,8 +10,6 @@
 - Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, topological sorting)
 - Latex format output distributions which can be easily dropped into documents for publication
 
-(CC BY-SA 4.0) 2022. *If you use this code, please cite: [M.A. Little, R. Badawy, 2019, "Causal bootstrapping", arXiv:1910.09648](https://arxiv.org/abs/1910.09648)*
-
 ## Installation and getting started
 
 We currently offer seamless installation with  `pip`. Download the current distribution of the package, and run:
@@ -20,19 +18,20 @@ pip install .
 ```
 in the root directory of the decompressed package.
 
-Tutorials, graduated by complexity, are included as part of the package. These can be found in `grapl/tutorials`.
+Tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
 To run these directly, use:
-```
+```python
 import grapl.tutorials.tutorial1 as grapl_tutor
 grapl_tutor.run()
 ```
 and similarly for tutorials 2-4.
 
 ## Usage example
+### Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` -> `M` -> `Y`) with hidden/latent confounding back-door path `X` -- `Y`
 
-Computing the front-door adjusted distribution of the causal effect of *X* on *Y* with mediator *M* (e.g. *X* -> *M* -> *Y*) with hidden/latent confounding back-door path *X* -- *Y*. First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
+First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
 
-```
+```python
 import grapl.algorithms as algs
 import grapl.dsl as dsl
 
@@ -47,7 +46,7 @@ G = grapl_obj.readgrapl(dag_grapl)
 
 Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventional distribution (if it can be identified):
 
-```
+```python
 id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
 if isident:
     print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
@@ -55,9 +54,9 @@ else:
     print('Interventional distribution not identifiable')
 ```
 
-## How to run the unit tests
+## Testing
 
-```
+```python
 import grapl.test.unit_tests
 grapl.test.unit_tests.run()
 ```
