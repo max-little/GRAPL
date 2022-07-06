@@ -16,7 +16,16 @@ import copy as cp
 def idfixing(G, X={}, Y={}):
     """Implementation of Richardson et al.'s Theorem 60 for causal effect identification
        from given ADMG. See: T.S. Richardson, J.M. Robins, I. Shpitser, 2012:
-       "Nested Markov properties for acyclic directed mixed graphs", UAI'12
+       "Nested Markov properties for acyclic directed mixed graphs", UAI'12.
+
+       Parameters:
+       G -- ADMG object representing the mixed causal graph
+       X -- Set of interventional variables (must not be empty)
+       Y -- Set of effect variables (if empty, all variables other than the set X)
+
+       Returns:
+       If interventional distribution is identifiable, returns the identified expression string
+       the corresponding identified Expr object, and True. Otherwise, returns '', None, False
     """
 
     # Must supply the set of interventional (cause) variables
@@ -105,7 +114,17 @@ def idfixing(G, X={}, Y={}):
 
 
 def dagfactor(G, Y={}, simplify=True):
-    """Factorized distribution for DAGs (ADMGs with no bidirects)."""
+    """Factorized distribution for DAGs (ADMGs with no bidirects).
+
+       Parameters:
+       G -- DAG object representing the causal graph (must not be mixed)
+       Y -- Set of effect variables (if empty, all variables in G)
+       simplify -- If True, final expression is explicitly simplified
+
+       Returns:
+       If G is a DAG, factored expression string, corresponding Expr object, and True.
+       If G is not a DAG then '', None, False.
+    """
 
     # Check to make sure there are no latent variables
     if not G.isdag():
@@ -137,7 +156,18 @@ def dagfactor(G, Y={}, simplify=True):
     
 
 def truncfactor(G, X={}, Y={}, prefactor=True):
-    """Truncated factorization ("g-formula") for DAGs (ADMGs with no bidirects)."""
+    """Truncated factorization ("g-formula") for DAGs (ADMGs with no bidirects).
+
+       Parameters:
+       G -- DAG object representing the causal graph (must not be mixed)
+       X -- Set of interventional variables (must not be empty)
+       Y -- Set of effect variables (if empty, all variables in G other than the set X)
+       prefactor -- If True, joint distribution is chain factored before fixing
+
+       Returns:
+       If G is a DAG, factored interventonal distribution string, corresponding Expr object,
+       and True. Otherwise, returns '', None, False.
+    """
 
     # Must supply the set of interventional variables
     if not X:
@@ -204,7 +234,15 @@ def truncfactor(G, X={}, Y={}, prefactor=True):
 
 
 def localmarkov(G):
-    """Compute all local Markov independences for DAGs (ADMGs with no bidirects)."""
+    """Compute all local Markov independences for DAGs (ADMGs with no bidirects).
+
+       Parameters:
+       G -- DAG object representing the causal graph (must not be mixed)
+
+       Returns:
+       If G is a DAG, set of strings representing Markov independences, True.
+       Otherwise returns empty set, False.
+    """
 
     # Check to make sure there are no latent variables
     if not G.isdag():
@@ -229,7 +267,16 @@ def localmarkov(G):
 
 
 def admgfactor(G, Y={}):
-    """Factorized distribution for ADMGs."""
+    """Factorized distribution for ADMGs.
+
+       Parameters:
+       G -- ADMG object representing the mixed causal graph
+       Y -- Set of variables on which expression is represented (if empty, all variables
+            other than the set X)
+
+       Returns:
+       Factored expression string, corresponding Expr object.
+    """
 
     # Collate variable names
     V = G.nodes()
