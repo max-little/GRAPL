@@ -11,7 +11,11 @@ from queue import Empty
 import grapl.util as util
 
 class ADMGNode():
-    """An ADMG node (random variable) object."""
+    """An ADMG node (random variable) object. The member variables, parents, children,
+       bidirects are Sets of Strings, each string is the name of a random variable (node)
+       in the graph. Bidirects are (nodes) connected to this one via a latent edge. The
+       properties member is an optional Set of properties.
+    """
     def __init__(self, parents={}, bidirects={}, children={}, properties={}):
         self.parents = set(parents)
         self.children = set(children)
@@ -19,24 +23,34 @@ class ADMGNode():
         self.properties = set(properties)
 
 class ADMG():
-    """An ADMG graph object."""
+    """An ADMG graph object. The title member variable (String) is the name of graph
+       (mostly for display purposes). The vars member is a Dict of String-ADMGNode pairs,
+       representing his graph's random variables (ADMGNodes), indexed by node name (String).
+    """
     def __init__(self, title=''):
         self.title = title
         self.vars = dict()
 
     def settitle(self, title=''):
-        """Set graph title."""
+        """Set graph title (String)."""
         self.title = title
 
     def addvar(self, name='', parents={}, bidirects={}, children={}, properties={}):
-        """Add a variable to a graph with optional parents, bidirects and/or children."""
+        """Add a new random variable to the graph with string name, with optional parents, bidirects
+           children and/or properties. The name must not be empty.
+           Each random variable (parents, bidirects, children) is a Set of Strings,
+           each string representing a random variable in the graph.
+        """
         if name != '':
             self.vars[name] = ADMGNode(parents,bidirects,children,properties)
         else:
             raise ValueError('admg:addvar: Invalid node name')
 
     def addedges(self, name='', parents={}, bidirects={}, children={}):
-        """Add parents, bidirects and/or child edges to a graph."""
+        """Add (optional) new edges connecting parents, bidirects and/or child random variables,
+           to the random variable given in name (which must not be empty).
+           Edges are Sets of Strings, each string representing a random variable in the graph.
+        """
         if name != '':
             self.vars[name].parents = self.vars[name].parents.union(parents)
             self.vars[name].children = self.vars[name].children.union(children)
@@ -45,7 +59,12 @@ class ADMG():
             raise ValueError('admg:addedges: Invalid node name')
 
     def connect(self):
-        """Ensure all parent/child/bidirect edges are consistent across the graph."""
+        """Ensure all parent/child/bidirect edges are consistent across the graph.
+           Explicitly: every parent of a random variable, must have that variable
+           as a child, and every random variable connected by a latent (bidrected)
+           edge to another random variable, must have a bidirected edge to that
+           first random variable.
+        """
         for node in set(self.vars):
             for p in self.pa({node}):
                 self.vars[p].children = self.ch({p}).union({node})
@@ -53,7 +72,7 @@ class ADMG():
                 self.vars[b].bidirects = self.bi({b}).union({node})
 
     def display(self):
-        """Pretty-print a text representation of the graph."""
+        """Pretty-print a text representation of the graph (ADMG) object."""
         nodes = set(self.vars)
         print('Title: ' + self.title)
         print('Vars: ' + util.csepstr(nodes))
@@ -74,11 +93,17 @@ class ADMG():
                 print(node,'<-->', util.csepstr(bidirects))
 
     def nodes(self):
-        """Return set of all nodes (variables)."""
+        """Return set of all random variables (nodes) in the graph.
+           This is represented as a Set of Strings, each string being the name of
+           a random variable.
+        """
         return set(self.vars)
 
     def sub(self, subvars):
-        """Find a subgraph of a graph."""
+        """Find a subgraph of a graph. The subvars parameter is a Set of Strings,
+           each string naming a random variable. If there are no such random variables
+           in the graph, the result will be an empty graph. Returns an ADMG object.
+        """
         sub = ADMG(self.title)
         for node in set(self.vars):
             if node in subvars:
@@ -89,7 +114,11 @@ class ADMG():
         return sub
     
     def ch(self, nodes):
-        """Find the union of all children of a set of nodes."""
+        """Find the union of all children of a set of random variables (nodes).
+           The set of nodes is given as a Set of Strings, each string being the
+           name of a random variable. Each such random variable must exist in the graph.
+           Returns a Set of Strings, each string being the name of a random variable.
+        """
         try:
             children = set()
             for node in nodes:
@@ -99,7 +128,11 @@ class ADMG():
             raise ValueError(f"admg.ch:Var '{node}' does not exist")
 
     def pa(self, nodes):
-        """Find the union of all parents of a set of nodes."""
+        """Find the union of all parents of a set of random variables (nodes).
+           The set of nodes is given as a Set of Strings, each string being the
+           name of a random variable. Each such random variable must exist in the graph.
+           Returns a Set of Strings, each string being the name of a random variable.
+        """
         try:
             parents = set()
             for node in nodes:
@@ -109,7 +142,11 @@ class ADMG():
             raise ValueError(f"admg.pa:Var '{node}' does not exist")
 
     def bi(self, nodes):
-        """Find the union of all bidirected edges of a set of nodes."""
+        """Find the union of all bidirected (latent) edges of a set of random variables (nodes).
+           The set of nodes is given as a Set of Strings, each string being the
+           name of a random variable. Each such random variable must exist in the graph.
+           Returns a Set of Strings, each string being the name of a random variable.
+        """
         try:
             bidirects = set()
             for node in nodes:
@@ -119,47 +156,69 @@ class ADMG():
             raise ValueError(f"admg.bi:Var '{node}' does not exist")
     
     def an(self, nodes):
-        """Find the union of all ancestors of a given set of nodes, and the nodes themselves."""
+        """Find the union of all ancestors of a given set of random variables (nodes),
+           and the nodes themselves. The set of nodes is given as a Set of Strings,
+           each string being the name of a random variable. Each such random variable must
+           exist in the graph. Returns a Set of Strings, each string being the name
+           of a random variable.
+        """
 
-        def an_recurse(node, ancestors):
+        def _an_recurse(node, ancestors):
             parents = self.pa({node})
             ancestors = ancestors.union(parents)
             for parent in parents:
-                ancestors = an_recurse(parent, ancestors)
+                ancestors = _an_recurse(parent, ancestors)
             return ancestors
 
         ancestors = set()
         for node in nodes:
-            ancestors = ancestors.union(an_recurse(node, set()))
+            ancestors = ancestors.union(_an_recurse(node, set()))
         return ancestors.union(nodes)
 
     def de(self, nodes):
-        """Find the union of all descendants of a given set of nodes, and the nodes themselves."""
+        """Find the union of all descendants of a given set of random variables (nodes),
+           and the nodes themselves. The set of nodes is given as a Set of Strings,
+           each string being the name of a random variable. Each such random variable must
+           exist in the graph. Returns a Set of Strings, each string being the name
+           of a random variable.
+        """
 
-        def de_recurse(node, descendants):
+        def _de_recurse(node, descendants):
             children = self.ch({node})
             descendants = descendants.union(children)
             for child in children:
-                descendants = de_recurse(child, descendants)
+                descendants = _de_recurse(child, descendants)
             return descendants
 
         descendants = set()
         for node in nodes:
-            descendants = descendants.union(de_recurse(node, set()))
+            descendants = descendants.union(_de_recurse(node, set()))
         return descendants.union(nodes)
     
     def nd(self, nodes):
-        """Find all non-descendants of a given set of nodes."""
+        """Find all non-descendants of a given set of random variables (nodes). The set of nodes
+           is given as a Set of Strings, each string being the name of a random variable.
+           Each such random variable must exist in the graph. Returns a Set of Strings, each string
+           being the name of a random variable.
+        """
         return self.nodes().difference(self.de(nodes))
 
     def dispa(self, node):
-        """Find the district parents of a node in an ADMG."""
+        """Find the district parents of a random variable (node) in a graph. The node is given
+           as a String, which is the name of the random variable. This random variable must
+           exist in the graph. Returns a Set of Strings, each string being the name of a random
+           variable.
+        """
         district = self.district(node)
         parents = self.pa(district)
         return parents.union(district.difference({node}))
 
     def mb(self, node):
-        """Find the Markov blanket of a node in a DAG, returns None if graph is not a DAG."""
+        """Find the Markov blanket of a random variable (node) in a DAG. The node is given
+           as a String, which is the name of the random variable, which must exist in the graph.
+           If the graph is a DAG, returns a Set of Strings, each string being the name of a random
+           variable, otherwise returns None.
+        """
         if not self.isdag():
             return None
         else:
@@ -170,7 +229,10 @@ class ADMG():
             return mb_nodes.difference({node})
 
     def districts(self):
-        """Compute the set of all districts (c-components) of an ADMG."""
+        """Compute all districts (c-components) of an ADMG. Returns a List of Set of Strings,
+           each Set being a district of the graph. The sets are names of the random variables
+           in each district.
+        """
         components = []
         nodes = set(self.vars)
         while len(nodes) > 0:
@@ -181,20 +243,27 @@ class ADMG():
         return components
             
     def district(self, node):
-        """Find the district (c-components) of a node."""
+        """Find the district (c-components) of a random variable (node). The node is given
+           as a String, which is the name of the random variable, which must exist in the graph.
+           Returns a Set of Strings, each string being the name of a random variable in the
+           district.
+        """
         
-        def district_recurse(node, component):
+        def _district_recurse(node, component):
             component = component.union({node})
             bidirects = self.bi({node})
             for bidirect in bidirects:
                 if bidirect not in component:
-                    component = district_recurse(bidirect, component)
+                    component = _district_recurse(bidirect, component)
             return component
         
-        return district_recurse(node, set())
+        return _district_recurse(node, set())
 
     def fix(self, node):
-        """Apply the interventional fixing operation to a node."""
+        """Apply the interventional fixing operation to a random variable (node) in the
+           graph. This changes the graph (ADMG) object. The node is given as the string
+           name of the random variable, which must exist in the graph. 
+        """
         for parent in self.pa({node}):
             self.vars[parent].children = self.vars[parent].children.difference({node})
         self.vars[node].parents = set()
@@ -204,7 +273,10 @@ class ADMG():
 
     def isfixable(self, node):
         """Check whether it is possible to apply the interventional fixing operation
-           to a node."""
+           to a random variable (node). The node is given as the string
+           name of the random variable, which must exist in the graph. Returns True
+           if fixable, False if not.
+        """
         district = self.district(node)
         descend = self.de({node}).union({node})
         fix = district.intersection(descend)
@@ -218,7 +290,9 @@ class ADMG():
         return (not bidirects)
     
     def fixable(self):
-        """Returns set of all fixable nodes in the graph."""
+        """Returns set of all fixable nodes in the graph. Returns a Set of Strings,
+           each string being the name of a fixable random variable in the graph.
+        """
         nodes = set(self.vars)
         fix_set = set()
         for node in nodes:
@@ -227,14 +301,16 @@ class ADMG():
         return fix_set
 
     def topsort(self):
-        """Return list of nodes sorted topologically."""
+        """List of random variables (nodes) sorted topologically. Returns a List of Strings,
+           each string being the name of a random variable.
+        """
 
         # Recursive depth-first search
-        def visit(node):
+        def _visit(node):
             if node not in visited:
                 children = self.ch({node})
                 for child in children:
-                    visit(child)
+                    _visit(child)
                 visited.add(node)
                 sorted.insert(0, node)
 
@@ -246,7 +322,7 @@ class ADMG():
         while True:
             unvisited = nodes.difference(visited)
             if unvisited:
-                visit(unvisited.pop())
+                _visit(unvisited.pop())
             else:
                 break
 
@@ -257,7 +333,7 @@ class ADMG():
            and uses this search to detect if graph is cyclic."""
 
         # Recursive depth-first search, marking nodes which are part of a cyclic path
-        def visit(node):
+        def _visit(node):
             if node in visited:
                 return False
             if node in marked:
@@ -266,7 +342,7 @@ class ADMG():
             cycle = False
             children = self.ch({node})
             for child in children:
-                cycle = visit(child)
+                cycle = _visit(child)
                 if cycle:
                     break
             if cycle:
@@ -285,7 +361,7 @@ class ADMG():
         while not cyclic:
             unvisited = nodes.difference(visited)
             if unvisited:
-                cyclic = visit(unvisited.pop())
+                cyclic = _visit(unvisited.pop())
             else:
                 break
 
