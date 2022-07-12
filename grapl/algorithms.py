@@ -19,11 +19,12 @@ def idfixing(G, X={}, Y={}):
        "Nested Markov properties for acyclic directed mixed graphs", UAI'12.
 
        Parameters:
-       G -- ADMG object representing the mixed causal graph
-       X -- Set of interventional variables (must not be empty)
-       Y -- Set of effect variables (if empty, all variables other than the set X)
+       G (ADMG)           -- A mixed causal graph object
+       X (Set of Strings) -- Set of interventional variables, where each string is a random variable name (must not be empty)
+       Y (Set of Strings) -- Set of variables on which interventional expression is represented, where each string is a random
+                             variable name (if empty, then all variables in G except for those in X)
 
-       Returns:
+       Returns: (String, Expr, Boolean)
        If interventional distribution is identifiable, returns the identified expression string
        the corresponding identified Expr object, and True. Otherwise, returns '', None, False
     """
@@ -117,11 +118,11 @@ def dagfactor(G, Y={}, simplify=True):
     """Factorized distribution for DAGs (ADMGs with no bidirects).
 
        Parameters:
-       G -- DAG object representing the causal graph (must not be mixed)
-       Y -- Set of effect variables (if empty, all variables in G)
-       simplify -- If True, final expression is explicitly simplified
+       G (ADMG)           -- DAG representing the causal graph (must not have bidirects)
+       Y (Set of Strings) -- Set of effect variables (if empty, all variables in G)
+       simplify (Boolean) -- If True, final expression is explicitly simplified
 
-       Returns:
+       Returns: (String, Expr, Boolean)
        If G is a DAG, factored expression string, corresponding Expr object, and True.
        If G is not a DAG then '', None, False.
     """
