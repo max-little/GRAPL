@@ -18,6 +18,8 @@ The terminal identifiers are:
         DIR_EDGE: '->', indicating a directed edge
         BI_EDGE: '<->', indicating a bidirected edge
 
+It is recommended not to call functions without docstrings in this module, externally.
+
 (CC BY-SA 4.0) 2021. If you use this code, please cite: M.A. Little, R. Badawy,
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
@@ -29,7 +31,9 @@ import copy
 
 
 class GraplDSL():
-    """A GRAPL lexer and parser object, implemented using PLY."""
+    """A GRAPL lexer and parser object, implemented using PLY. See PLY documentation
+       in this package, for further details.
+    """
     def __init__(self):
         self.lexer = lex.lex(module=self)
         self.parser = yacc.yacc(module=self)
@@ -98,7 +102,10 @@ class GraplDSL():
         raise SyntaxError("Grapl syntax error at line: " + str(p.lineno) + ", near: " + p.value)
 
     def readgrapl(self, scm_string=''):
-        """Read a GRAPL syntax string describing an ADMG, and create a graph from it."""
+        """Read a GRAPL syntax string describing an ADMG, and create a graph from it. Returns
+           an ADMG object; see the description of the ADMG class, for further details. Raises
+           a SyntaxError exception if the GRAPL string is not well formed.
+        """
         self.admg = admg.ADMG()
         try:
             self.parser.parse(scm_string)
@@ -109,7 +116,10 @@ class GraplDSL():
         return copy.deepcopy(self.admg)
     
     def savegrapl(self, admg):
-        """Output a given ADMG graph object to a GRAPL syntax string"""
+        """Given an ADMG object as parameter, outputs a corresponding GRAPL syntax string.
+           See the description of the ADMG class for further details about this structure.
+           Returns a String.
+        """
         nodes = set(admg.vars)
         scm_string = admg.title + self.t_EOC + ' '
 
