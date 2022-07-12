@@ -159,12 +159,12 @@ def truncfactor(G, X={}, Y={}, prefactor=True):
     """Truncated factorization ("g-formula") for DAGs (ADMGs with no bidirects).
 
        Parameters:
-       G -- DAG object representing the causal graph (must not be mixed)
-       X -- Set of interventional variables (must not be empty)
-       Y -- Set of effect variables (if empty, all variables in G other than the set X)
-       prefactor -- If True, joint distribution is chain factored before fixing
+       G (ADMG) -- DAG object representing the causal graph (must not have bidirects)
+       X (Set of Strings)  -- Interventional variables where each string is a random variable name (must not be empty)
+       Y (Set of Strings)  -- Effect variables, each sring is a random variable name (if empty, all variables in G other than the set X)
+       prefactor (Boolean) -- If True, joint distribution is chain factored before fixing
 
-       Returns:
+       Returns: (String, Expr, Boolean)
        If G is a DAG, factored interventonal distribution string, corresponding Expr object,
        and True. Otherwise, returns '', None, False.
     """
@@ -237,11 +237,10 @@ def localmarkov(G):
     """Compute all local Markov independences for DAGs (ADMGs with no bidirects).
 
        Parameters:
-       G -- DAG object representing the causal graph (must not be mixed)
+       G (ADMG) -- DAG object representing the causal graph (must not have bidirects)
 
-       Returns:
-       If G is a DAG, set of strings representing Markov independences, True.
-       Otherwise returns empty set, False.
+       Returns: (Set of Strings, Boolean)
+       If G is a DAG, set of strings representing Markov independences, True. Otherwise returns empty set, False.
     """
 
     # Check to make sure there are no latent variables
@@ -270,12 +269,12 @@ def admgfactor(G, Y={}):
     """Factorized distribution for ADMGs.
 
        Parameters:
-       G -- ADMG object representing the mixed causal graph
-       Y -- Set of variables on which expression is represented (if empty, all variables
-            other than the set X)
+       G (ADMG)           -- A mixed causal graph
+       Y (Set of Strings) -- Set of variables on which expression is represented, where each string is a random variable name
+                             (if empty, then all variables in G)
 
-       Returns:
-       Factored expression string, corresponding Expr object.
+       Returns: (String, Expr)
+       Factored distribution expression string, corresponding Expr object.
     """
 
     # Collate variable names
