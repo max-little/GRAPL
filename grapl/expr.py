@@ -11,15 +11,24 @@ import grapl.util as util
 
 
 class Expr():
-    """A distribution expression object."""
+    """A distribution expression object, as a ratio of products of marginalized distributions.
+       The member variables are: num (numerator), a List of Sets of Strings, each set being
+       a distribution, consisting of a set of random variables (node names); den (denominator)
+       same as with num; and mrg (marginals), a Set of Strings, each string being the name of a
+       random variable which is marginalized out over the whole ratio distribution.
+    """
     def __init__(self,num=[],den=[],mrg=set()):
         self.num = list(num)
         self.den = list(den)
         self.mrg = set(mrg)
 
     def addvars(self, num=[], den=[], mrg=set()):
-        """Multiply by a set of numerator variables, divide by a set of denominator
-           variables, and integrate over a set of variables to marginalize out."""
+        """Adds a new set of numerator, denominator and marginal variables to an expression object.
+           The parameters are: num (numerator), a List of Sets of Strings, each set being
+           a distribution, consisting of a set of random variables (node names); den (denominator)
+           same as with num; and mrg (marginals), a Set of Strings, each string being the name of a
+           random variable which is marginalized out.
+        """
         if len(num) > 0:
             self.num.append(num)
         if len(den) > 0:
@@ -28,26 +37,40 @@ class Expr():
             self.mrg.add(mrg)
     
     def subsvar(self, old, new):
-        """Substitute the old name for a variable, with a new name."""
+        """Substitute the old name for a random variable, with a new name. The parameters are:
+           old (old variable) String name for an existing random variable; and new: String
+           name to which the old variable will be renamed.
+        """
         self.num = [{new if (v == old) else v for v in term} for term in self.num]
         self.den = [{new if (v == old) else v for v in term} for term in self.den]
         self.mrg = {new if (v == old) else v for v in self.mrg}
     
     def fix(self, fix, blanket):
-        """Apply the interventional fixing operation to a distribution expression."""
+        """Apply the interventional fixing operation to a distribution expression. Parameters
+           are fix: a String naming the random variable to fix; and blanket: a Set of Strings,
+           giving the effective parents of the variable in fix.
+        """
         if len(blanket) == 0:
             self.addvars(den={fix})
         else:
             self.addvars(num=blanket, den=blanket.union({fix}))
 
     def fixmarginal(self, fix):
-        """Apply the interventional fixing operation where it can be marginalized."""
+        """Apply the interventional fixing operation where it can be marginalized. The fix
+           parameter is a string giving the name of the random variable to fix. To avoid
+           naming clashes, a prime character is appended to the fix variable, and any
+           random variables with the name in fix, are renamed accordingly.
+        """
         new_var = fix + chr(39)     # Avoid variable name clashes
         self.addvars(mrg = new_var)
         self.subsvar(fix, new_var)
 
     def cancel(self):
-        """An algorithm for cancelling variables in a distribution."""
+        """An algorithm for cancelling variables in a distribution expression. This seeks to greedily
+           match and remove terms appearing in both numerator and denominator of an expression.
+           Returns True if any changes to the expression occurred as a result, and False
+           otherwise.
+        """
         num = self.num.copy()
         den = self.den.copy()
         changes = False
@@ -62,7 +85,11 @@ class Expr():
         return changes
 
     def marginal(self):
-        """An algorithm for marginalizing out variables in a distribution."""
+        """An algorithm for marginalizing out variables in a distribution expression. Greedily
+           removes variables appearing in both the numerator and the set of marginal variables.
+           Returns True if any changes to the expression occurred as a result, and False
+           otherwise.
+        """
         num = self.num.copy()
         mrg = self.mrg.copy()
         changes = False
@@ -80,7 +107,8 @@ class Expr():
 
     def simplify(self):
         """An algorithm for simplifying a distribution, by successive cancellation and marginalization
-           until a fixed point is reached."""
+           until a fixed point is reached. Returns True if simplifications were possible, and
+           False otherwise."""
         changes = True
         simplified = False
         while changes:
@@ -91,7 +119,8 @@ class Expr():
         return simplified
 
     def tostr(self):
-        """Convert a distribution to a Latex expression for display."""
+        """Convert a distribution expression to a Latex expression for display. Returns a Latex
+           format String."""
         expr_str = ''
         if len(self.mrg) > 0:
             expr_str = expr_str + util.mrgstr(self.mrg)
@@ -112,7 +141,11 @@ class Expr():
         return expr_str
 
     def tocondstr(self):
-        """Convert a distribution to conditionals, and then into Latex format."""
+        """Convert a distribution expression to conditional form, and then into Latex format. This
+           greedily matches terms in the numerator with corresponding terms in the denominator,
+           so as to represent ratios of terms as conditionals in the numerator. Returns a Latex
+           format String.
+        """
         expr_str = ''
         if len(self.mrg) > 0:
             expr_str = expr_str + util.mrgstr(self.mrg)
