@@ -10,7 +10,7 @@ acyclic directed mixed graphs for structural causal modelling.
 import grapl.algorithms as algs
 import grapl.dsl as dsl
 
-def run():
+def run_all():
     test_cyclic()
     test_topsort()
     test_tianfactor()

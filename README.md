@@ -21,8 +21,7 @@ in the root directory of the decompressed package.
 Tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
 To run these directly, use:
 ```python
-import grapl.tutorials.tutorial1 as grapl_tutor
-grapl_tutor.run()
+>>> import grapl.tutorials.tutorial1
 ```
 and similarly for tutorials 2-4.
 
@@ -32,33 +31,33 @@ and similarly for tutorials 2-4.
 First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
 
 ```python
-import grapl.algorithms as algs
-import grapl.dsl as dsl
+>>> import grapl.algorithms as algs
+>>> import grapl.dsl as dsl
 
-grapl_obj = dsl.GraplDSL()
-dag_grapl = ' "Front door adjustment"; \
-  X; Y; M; \
-  X -> M; \
-  M -> Y; \
-  X <-> Y; '
-G = grapl_obj.readgrapl(dag_grapl)
+>>> grapl_obj = dsl.GraplDSL()
+>>> dag_grapl = ' "Front door adjustment"; \
+>>>   X; Y; M; \
+>>>   X -> M; \
+>>>   M -> Y; \
+>>>   X <-> Y; '
+>>> G = grapl_obj.readgrapl(dag_grapl)
 ```
 
 Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventional distribution (if it can be identified):
 
 ```python
-id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
-if isident:
-    print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
-else:
-    print('Interventional distribution not identifiable')
+>>> id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
+>>> if isident:
+>>>     print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
+>>> else:
+>>>     print('Interventional distribution not identifiable')
 ```
 
 ## Testing
 
 ```python
-import grapl.test.unit_tests
-grapl.test.unit_tests.run()
+>>> import grapl.test.unit_tests as tests
+>>> tests.run_all()
 ```
 
 ## Release notes, v1.3
