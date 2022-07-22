@@ -10,27 +10,25 @@ acyclic directed mixed graphs for structural causal modelling.
 import grapl.algorithms as algs
 import grapl.dsl as dsl
 
-def run():
+# Create a GRAPL DSL parser
+grapl_obj = dsl.GraplDSL()
 
-    # Create a GRAPL DSL parser
-    grapl_obj = dsl.GraplDSL()
+# Create a DAG from a GRAPL string
+dag_grapl = ' "Simple back-door graph"; \
+    C; X; Y; \
+    C -> X; \
+    C -> Y; \
+    X -> Y; '
+G = grapl_obj.readgrapl(dag_grapl)
+G.display()
 
-    # Create a DAG from a GRAPL string
-    dag_grapl = ' "Simple back-door graph"; \
-        C; X; Y; \
-        C -> X; \
-        C -> Y; \
-        X -> Y; '
-    G = grapl_obj.readgrapl(dag_grapl)
-    G.display()
+print('\nCheck if the DAG is acyclic:')
+print(G.isdag()) # True
 
-    print('\nCheck if the DAG is acyclic:')
-    print(G.isdag()) # True
+print('\nFactorized joint distribution:')
+fac_str, expr, isdag = algs.dagfactor(G, simplify=False)
+print(fac_str) # p(X,C,Y)=[p(Y|X,C)p(X|C)p(C)]
 
-    print('\nFactorized joint distribution:')
-    fac_str, expr, isdag = algs.dagfactor(G, simplify=False)
-    print(fac_str) # p(X,C,Y)=[p(Y|X,C)p(X|C)p(C)]
-
-    print('\nInterventional (cause-effect) distribution of X on Y:')
-    id_str, expr, isdag = algs.truncfactor(G, {'X'}, {'Y'})
-    print(id_str) # p_{X}(Y)=\sum_{C}[p(Y|X,C)p(C)]
+print('\nInterventional (cause-effect) distribution of X on Y:')
+id_str, expr, isdag = algs.truncfactor(G, {'X'}, {'Y'})
+print(id_str) # p_{X}(Y)=\sum_{C}[p(Y|X,C)p(C)]

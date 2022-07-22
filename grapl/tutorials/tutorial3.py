@@ -10,24 +10,22 @@ acyclic directed mixed graphs for structural causal modelling.
 import grapl.algorithms as algs
 import grapl.dsl as dsl
 
-def run():
+# Create a GRAPL DSL parser
+grapl_obj = dsl.GraplDSL()
 
-    # Create a GRAPL DSL parser
-    grapl_obj = dsl.GraplDSL()
+# Load an ADMG description from a GRAPL file and display it
+G = grapl_obj.readgrapl(open('grapl/graphs/front_door.grapl', 'r').read())
+G.display()
 
-    # Load an ADMG description from a GRAPL file and display it
-    G = grapl_obj.readgrapl(open('grapl/graphs/front_door.grapl', 'r').read())
-    G.display()
+print('\nCheck if the ADMG is acyclic:')
+print(G.isayclic()) # True
 
-    print('\nCheck if the ADMG is acyclic:')
-    print(G.isayclic()) # True
+print('\nCompute all ADMG districts:')
+print(G.districts()) # [{'M'}, {'X', 'Y'}]
 
-    print('\nCompute all ADMG districts:')
-    print(G.districts()) # [{'M'}, {'X', 'Y'}]
-
-    print('\nInterventional (cause-effect) distribution of X on Y:')
-    id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
-    if isident:
-        print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
-    else:
-        print('Interventional distribution not identifiable')
+print('\nInterventional (cause-effect) distribution of X on Y:')
+id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
+if isident:
+    print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
+else:
+    print('Interventional distribution not identifiable')
