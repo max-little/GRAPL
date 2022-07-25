@@ -99,7 +99,10 @@ class GraplDSL():
                 self.admg.addedges(p[3],bidirects={p[1]})
         
     def p_error(self,p):
-        raise SyntaxError("Grapl syntax error at line: " + str(p.lineno) + ", near: " + p.value)
+        if p is not None:
+            raise SyntaxError("Grapl syntax error at line: " + str(p.lineno) + ", near: " + p.value)
+        else:
+            raise SyntaxError("Grapl syntax error: unexpected end of input")
 
     def readgrapl(self, scm_string=''):
         """Read a GRAPL syntax string describing an ADMG, and create a graph from it. Returns
