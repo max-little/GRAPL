@@ -23,7 +23,12 @@ To run these directly, use:
 ```python
 >>> import grapl.tutorials.tutorial1
 ```
-and similarly for tutorials 2-4.
+and similarly for tutorials 2-4, which cover the following topics:
+
+1. Creating a simple DAG from a GRAPL string, checking acyclicity, factorizing the joint distribution, and computing an interventional distribution.
+2. As above, but also: topological sort, computing ancestors and local Markov conditional independence relations.
+3. Loading a mixed graph (ADMG) from a GRAPL text file, computing districts, computing interventional distributions in the presence of unobserved variables.
+4. As above, but for a more complex mixed graph.
 
 ## Usage example
 *Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` &rarr; `M` &rarr; `Y`) with hidden/latent confounding back-door path `X` &mdash; `Y`.*
