@@ -18,6 +18,7 @@ pip install .
 ```
 in the root directory of the decompressed package.
 
+### Tutorials
 Tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
 To run these directly, use:
 ```python
