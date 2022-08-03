@@ -66,7 +66,8 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 >>> tests.run_all()
 ```
 
-## Release notes, v1.3
+## Release notes, v1.4
+- Significant structural revisions for JOSS publication
 - Tutorial introduction to the library
 - Comprehensive unit tests
 - Factorized, marginalized joint distributions for DAGs and ADMGs
