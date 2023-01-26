@@ -7,8 +7,9 @@
 - A simple text-based domain-specific language for representing both directed acyclic (DAG) and mixed, directed acyclic models (ADMGs) of interacting variables
 - Derivation of factorized, marginalized nonparametric distributional models for arbitrary DAGs
 - Computation of nonparametric, causal interventional distributions in arbitrarily complex models with (ADMG) and without (DAG) hidden variables, where such an interventional distribution can be computed in principle
-- Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, topological sorting)
+- Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, d-separation, topological sorting)
 - Latex format output distributions which can be easily dropped into documents for publication
+- Inline IPython/Jupyter Latex equation and DAG/ADMG rendering (using Graphviz)
 
 ## Installation and getting started
 
