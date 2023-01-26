@@ -12,56 +12,29 @@
 
 ## Installation and getting started
 
-We currently offer seamless installation with  `pip`. Install from the Python package index:
-```
-pip install grapl-causal
-```
-or download the current distribution of the package, and run:
+We currently offer seamless installation with  `pip`. Download the current distribution of the package, and run:
 ```
 pip install .
 ```
 in the root directory of the decompressed package.
 
-### Tutorials
 Tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
 To run these directly, use:
 ```python
 >>> import grapl.tutorials.tutorial1
 ```
-and similarly for tutorials 2-4, which cover the following topics:
-
-1. Creating a simple DAG from a GRAPL string, checking acyclicity, factorizing the joint distribution, and computing an interventional distribution.
-2. As above, but also: topological sort, computing ancestors and local Markov conditional independence relations.
-3. Loading a mixed graph (ADMG) from a GRAPL text file, computing districts, computing interventional distributions in the presence of unobserved variables.
-4. As above, but for a more complex mixed graph.
+and similarly for tutorials 2-4.
 
 ## Usage example
 *Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` &rarr; `M` &rarr; `Y`) with hidden/latent confounding back-door path `X` &mdash; `Y`.*
 
-First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`:
+First, create a GRAPL DSL object, then the GRAPL description of the graph in a string, and parse the string using `grapl.dsl.readgrapl` to create the graph object `G`. This can then be rendered directly in IPython/Jupyter notebooks:
 
-```python
->>> import grapl.algorithms as algs
->>> import grapl.dsl as dsl
+![GRAPL ADMG read/plot](https://raw.githubusercontent.com/max-little/GRAPL/main/grapl_admg_read_plot.png)
 
->>> grapl_obj = dsl.GraplDSL()
->>> dag_grapl = ' "Front door adjustment"; \
->>>   X; Y; M; \
->>>   X -> M; \
->>>   M -> Y; \
->>>   X <-> Y; '
->>> G = grapl_obj.readgrapl(dag_grapl)
-```
+Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventional distribution (if it can be identified). This can be rendered directly in Latex form:
 
-Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventional distribution (if it can be identified):
-
-```python
->>> id_str, expr, isident = algs.idfixing(G, {'X'}, {'Y'})
->>> if isident:
->>>     print(id_str) # p_{X}(Y)=\sum_{M,X'}[p(Y|M,X')p(M|X)p(X')]
->>> else:
->>>     print('Interventional distribution not identifiable')
-```
+![GRAPL fixing algorithm](https://raw.githubusercontent.com/max-little/GRAPL/main/grapl_idfixing.png)
 
 ## Testing
 
@@ -71,13 +44,6 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 ```
 
 ## Release notes, v1.4
-- Significant structural revisions for JOSS publication
-- Tutorial introduction to the library
-- Comprehensive unit tests
-- Factorized, marginalized joint distributions for DAGs and ADMGs
-- Marginalized truncated factorization for DAGs
-- List all local Markov conditional independence relations for DAGs
-- Topological sorting and DAG/ADMG acyclicity tests
-- All directed relationships e.g. child, parent, ancestor, descendent now operate on sets of nodes, giving e.g. inclusive parents for a given set of nodes
-- All factorization/identification algorithms now take a set of effect nodes if specified, otherwise the effect is all non-cause nodes
-- All factorization/identification algorithms now output a (potentially) simplified  Expr object for further processing, as well as a corresponding conditional distribution string
+- Full Jupyter/IPython integration: inline Latex equation and DAG/ADMG rendering (using Graphviz)
+- Algorithms for computing d-connection (all reachable nodes) and testing d-separation
+- Equation objects to handle distributions from factorization/identification algorithms
