@@ -8,7 +8,7 @@
 - Derivation of factorized, marginalized nonparametric distributional models for arbitrary DAGs
 - Computation of nonparametric, causal interventional distributions in arbitrarily complex models with (ADMG) and without (DAG) hidden variables, where such an interventional distribution can be computed in principle
 - Various algorithms for the analysis of causal influence in DAGs/ADMGs (e.g. c-components/districts, node interventions, local Markov conditional independence relations, d-separation, topological sorting)
-- Latex format output distributions which can be easily dropped into documents for publication
+- Latex format output distributions and DOT (Graphviz) graph drawings, which can be easily dropped into documents for publication
 - Inline IPython/Jupyter Latex equation and DAG/ADMG rendering (using Graphviz)
 
 ## Installation and getting started
@@ -24,7 +24,7 @@ To run these directly, use:
 ```python
 >>> import grapl.tutorials.tutorial1
 ```
-and similarly for tutorials 2-4.
+and similarly for tutorials 2-4. **[Tutorial 5](grapl/tutorials/tutorial5.ipynb)** is an IPython/Jupyter notebook.
 
 ## Usage example
 *Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` &rarr; `M` &rarr; `Y`) with hidden/latent confounding back-door path `X` &mdash; `Y`.*
