@@ -1,0 +1,7 @@
+"Tikka & Karvanen 2017, Figure 1";
+W; X; Z; Y;
+W -> X;
+X -> Z;
+W -> Z;
+Z -> Y;
+X <-> Y;

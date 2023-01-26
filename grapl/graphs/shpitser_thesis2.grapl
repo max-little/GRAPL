@@ -1,0 +1,11 @@
+"Shpitser theis Figure 3.2(g)";
+X; Z1; Z2; Z3; Y;
+X -> Z1;
+Z1 -> Y;
+Z2 -> X;
+Z2 -> Z1;
+Z2 -> Z3;
+X <-> Z2;
+X <-> Y;
+X <-> Z3;
+Z2 <-> Y;
