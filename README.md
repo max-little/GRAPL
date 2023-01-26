@@ -44,7 +44,7 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 >>> tests.run_all()
 ```
 
-## Release notes, v1.4
+## Release notes, v1.5
 - Full Jupyter/IPython integration: inline Latex equation and DAG/ADMG rendering (using Graphviz)
 - Algorithms for computing d-connection (all reachable nodes) and testing d-separation
 - Equation objects to handle distributions from factorization/identification algorithms
