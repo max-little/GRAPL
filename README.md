@@ -13,7 +13,14 @@
 
 ## Installation and getting started
 
-We currently offer seamless installation with  `pip`. Download the current distribution of the package, and run:
+We currently offer seamless installation with `pip`. 
+
+Simply:
+```
+pip install grapl-causal
+```
+
+Alternatively, download the current distribution of the package, and run:
 ```
 pip install .
 ```
