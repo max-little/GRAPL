@@ -31,7 +31,7 @@ To run these directly, use:
 ```python
 >>> import grapl.tutorials.tutorial1
 ```
-and similarly for tutorials 2-4. **[Tutorial 5](grapl/tutorials/tutorial5.ipynb)** is an IPython/Jupyter notebook.
+and similarly for tutorials 2-4. **[Tutorial 5](grapl/tutorials/tutorial_05.ipynb)** is an IPython/Jupyter notebook.
 
 ## Usage example
 *Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` &rarr; `M` &rarr; `Y`) with hidden/latent confounding back-door path `X` &mdash; `Y`.*
