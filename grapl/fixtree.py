@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-Implement a Breadth-First Search (BFS) tree structure to search possible fixing
-sequences to fix a given causal graph (ADMG) if identifiable.
+Implement a Breadth-First Search (BFS) tree structure to compute fixing
+sequences for a desired intervention in a given causal graph (ADMG).
 
 (CC BY-SA 4.0) 2021. If you use this code, please cite: M.A. Little, R. Badawy,
 2019, "Causal bootstrapping", arXiv:1910.09648
