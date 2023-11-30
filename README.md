@@ -26,12 +26,8 @@ pip install .
 ```
 in the root directory of the decompressed package.
 
-Tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
-To run these directly, use:
-```python
->>> import grapl.tutorials.tutorial1
-```
-and similarly for tutorials 2-4. **[Tutorial 5](grapl/tutorials/tutorial_05.ipynb)** is an IPython/Jupyter notebook.
+IPython/Jupyter tutorials are included as part of the package in increasing order of complexity. These can be found in `grapl/tutorials`.
+For example, see **[Tutorial 5](grapl/tutorials/tutorial_05.ipynb)**.
 
 ## Usage example
 *Computing the front-door adjusted distribution of the causal effect of `X` on `Y` with mediator `M` (e.g. `X` &rarr; `M` &rarr; `Y`) with hidden/latent confounding back-door path `X` &mdash; `Y`.*
@@ -51,7 +47,5 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 >>> tests.run_all()
 ```
 
-## Release notes, v1.5
-- Full Jupyter/IPython integration: inline Latex equation and DAG/ADMG rendering (using Graphviz)
-- Algorithms for computing d-connection (all reachable nodes) and testing d-separation
-- Equation objects to handle distributions from factorization/identification algorithms
+## Release notes, v1.6
+- New algorithms for handling multiple fixing sequences.
