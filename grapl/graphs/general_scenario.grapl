@@ -1,0 +1,7 @@
+"General scenario example"; 
+Y; X; U; Z; 
+U -> Y; 
+Y -> Z; 
+U -> Z; 
+Z -> X; 
+X <-> Y;
