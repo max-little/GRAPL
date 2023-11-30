@@ -9,6 +9,6 @@ setup(
     author_email='maxl@mit.edu',
     license='GNU GPL-3.0',
     packages=['grapl','grapl.test','grapl.ply','grapl.tutorials'],
-    package_data={'grapl': ['graphs/*.grapl']},
+    package_data={'grapl': ['graphs/*.grapl', 'tutorials/*.ipynb']},
     install_requires=[],
 )
