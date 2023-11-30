@@ -183,3 +183,16 @@ class Expr():
         if (len(self.num) > 1) and (len(self.mrg) > 0):
             expr_str = expr_str + ']'
         return expr_str
+    
+    def combine(self, exprs):
+        """Combine multiple expressions into a single expression by multiplying top and bottom in the distribution ratio
+           merging their marginalized variables, and renaming any marginal variables which clash with an apostrophe '.
+        """
+        for ex in exprs:
+            clash_vars = self.mrg.difference(self.mrg.difference(ex.mrg))
+            for old_var in clash_vars:
+                new_var = old_var + chr(39)
+                ex.subsvar(old_var, new_var)
+            self.num = self.num + ex.num
+            self.den = self.den + ex.den
+            self.mrg = self.mrg.union(ex.mrg)
