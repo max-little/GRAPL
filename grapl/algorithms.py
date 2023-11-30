@@ -14,7 +14,6 @@ from grapl.fixtree import FixSeqTree
 import copy as cp
 import numpy as np
 from itertools import product
-import warnings
 
 
 def preintvar(G, X = {}, Y = {}):
@@ -135,11 +134,11 @@ def idfixall(G, X = {}, Y ={}, mode = "shortest", greedy = True):
     
     Returns:
     Depending on the selected 'mode', it returns different results:
-    - 'shortest': a Latex string of identified equation with the least number of distributions, its corresponding Eqn object, tracking information of fixing, and a boolean indicating if the causal effect is identifiable.
-    - 'mostmrg': a Latex string of identified equation with the most number marginalized variables, its corresponding Eqn object, tracking information of fixing, and a boolean indicating if the causal effect is identifiable.
-    - 'random': A randomly selected Latex string of identified equation, its corresponding Eqn object, tracking information of fixing, and a boolean indicating if the causal effect is identifiable.
-    - 'all': A list of all Latex string of identified equations, a list of their corresponding Eqn objects, tracking information of fixing, and a boolean indicating if the causal effect is identifiable.
-    If the causal effect is not identifiable: returns '', None, None, False
+    - 'shortest': a Latex string of identified equation with the least number of distributions, its corresponding Eqn object and a boolean indicating if the causal effect is identifiable.
+    - 'mostmrg': a Latex string of identified equation with the most number marginalized variables, its corresponding Eqn object and a boolean indicating if the causal effect is identifiable.
+    - 'random': A randomly selected Latex string of identified equation and a boolean indicating if the causal effect is identifiable.
+    - 'all': A list of all Latex string of identified equations, a list of their corresponding Eqn objects and a boolean indicating if the causal effect is identifiable.
+    If the causal effect is not identifiable: returns '', None , False
     """
 
     if mode not in ["shortest", "mostmrg", "random", "all"]:
@@ -157,7 +156,7 @@ def idfixall(G, X = {}, Y ={}, mode = "shortest", greedy = True):
         # For each district, find fixing sequences and corresponding fixed graphs
         fix_node_seqs, fix_graph_seqs, identifiable = fixseqsdistr(G = G, D = D, X = X, Y = Y, degrad = mode == "random")
         if not identifiable:
-            return None, None, False
+            return "", None, False
         D_exprs.append([])
 
         # According to the selected mode and greedy strategy, formulate the expression sequences
