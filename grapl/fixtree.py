@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Sep 18 18:30:44 2023
+Implement a Breadth-First Search (BFS) tree structure to compute fixing
+sequences for a desired intervention in a given causal graph (ADMG).
 
-@author: NickMao
+(CC BY-SA 4.0) 2021. If you use this code, please cite: M.A. Little, R. Badawy,
+2019, "Causal bootstrapping", arXiv:1910.09648
 """
 import grapl.expr as expr
 import grapl.eqn as eqn
