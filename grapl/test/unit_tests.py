@@ -200,3 +200,4 @@ def test_fixall_full():
     assert not G.isdag()
     assert G.isayclic()
     assert isident
+    
