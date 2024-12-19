@@ -6,10 +6,10 @@ acyclic directed mixed graphs for structural causal modelling.
 (CC BY-SA 4.0) 2021. If you use this code, please cite: M.A. Little, R. Badawy,
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
-
 from queue import Empty
 import grapl.util as util
 import graphviz
+from collections import deque
 
 class ADMGNode():
     """An ADMG node (random variable) object. The member variables, parents, children,
@@ -242,7 +242,7 @@ class ADMG():
             components.append(component)
             nodes = nodes.difference(component)
         return components
-            
+
     def district(self, node):
         """Find the district (c-components) of a random variable (node). The node is given
            as a String, which is the name of the random variable, which must exist in the graph.
@@ -328,6 +328,67 @@ class ADMG():
         """
         reachable = self.dconn(source,conds)
         return (target not in reachable)
+    
+    def mconn(self, source, conds=set()):
+        """Returns the set of all nodes m-connected to the source node (String),
+           conditional on the set of nodes given in conds (Set of Strings)."""
+        condsan = self.an(conds)
+        connected = set()
+        visited = set()
+        queue = deque()
+        queue.append((source, "up"))  # (current_node, direction)
+        while queue:
+            node, direction = queue.popleft()
+            if (node, direction) not in visited:
+                # Only add nodes to the connected set if they are not in the conditioning set
+                if node not in conds:
+                    connected.add(node)
+                visited.add((node, direction))
+                # Processing traversal from different directions
+                if direction == 'down':
+                    # Moving from downside traversal
+                    if node not in conds:
+                        for child in self.ch({node}):
+                            queue.append((child, 'down'))
+                    if node in condsan:
+                        # If the collider is open by conditioning on any of its descendants
+                        for parent in self.pa({node}):
+                            queue.append((parent, 'up'))
+                        for sibling in self.bi({node}):
+                            queue.append((sibling, 'bi'))
+
+                elif direction == 'up':
+                    # Moving from upside traversal
+                    if node not in conds:
+                        for parent in self.pa({node}):
+                            queue.append((parent, 'up'))
+                        for child in self.ch({node}):
+                            queue.append((child, 'down'))
+                        for sibling in self.bi({node}):
+                            queue.append((sibling, 'bi'))
+
+                elif direction == 'bi':
+                    # Moving through a bidirected edge
+                    if node not in conds:
+                        for child in self.ch({node}):
+                            queue.append((child, 'down'))
+                    if node in condsan:
+                        # If the collider is open by conditioning on any of its descendants
+                        for parent in self.pa({node}):
+                            queue.append((parent, 'up'))
+                        for sibling in self.bi({node}):
+                            if not any(sibling == visited_node[0] for visited_node in visited):
+                                # If the sibling is not visited yet
+                                queue.append((sibling, 'bi'))
+        return connected
+    
+    def ismsep(self, source, target, conds=set()):
+        """Tests whether the source node (String) and target node (String) are m-separated,
+        conditional on the set of nodes given in conds (Set of Strings). Returns
+        True if they are m-separated.
+        """
+        reachable = self.mconn(source, conds)
+        return target not in reachable
 
     def fixable(self):
         """Returns set of all fixable nodes in the graph. Returns a Set of Strings,

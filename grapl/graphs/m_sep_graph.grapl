@@ -1,0 +1,8 @@
+"test admg for m-separation"; 
+X; Y; W; Z; T; V; N;
+W <-> X; 
+X -> Y; 
+X -> V; 
+T -> X; 
+Z -> N; 
+Z <-> X;
