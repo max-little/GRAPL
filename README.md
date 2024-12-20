@@ -47,5 +47,5 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 >>> tests.run_all()
 ```
 
-## Release notes, v1.6
-- New algorithms for handling multiple fixing sequences.
+## Release notes, v1.6.1
+- Implementation of m-separation and m-connection algorithms.
