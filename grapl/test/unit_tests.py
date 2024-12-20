@@ -6,7 +6,6 @@ acyclic directed mixed graphs for structural causal modelling.
 (CC BY-SA 4.0) 2021. If you use this code, please cite: M.A. Little, R. Badawy,
 2019, "Causal bootstrapping", arXiv:1910.09648
 """
-
 import grapl.algorithms as algs
 import grapl.dsl as dsl
 
@@ -21,6 +20,8 @@ def run_all():
     test_non_identify2()
     test_complex_dag()
     test_markov()
+    test_mconn()
+    test_msep()
     test_fixall_greedy()
     test_fixall_full()
 
@@ -142,6 +143,25 @@ def test_dsep():
     assert ci.Z == {'G','I'}
     isdsep, ci, cistr, isdag = algs.dseparate(G,{'D'},{'S'},{'G'})
     assert not isdsep
+
+def test_mconn():
+    grapl_obj = dsl.GraplDSL()
+    grapl_filename = '/grapl/graphs/m_sep_graph.grapl'
+    G = grapl_obj.readgrapl(open(grapl_filename, 'r').read())
+    assert G.mconn('Y') == {'N', 'W', 'T', 'Z', 'V', 'Y', 'X'}
+    assert G.mconn('W', {'X'}) == {'W', 'T', 'Z', 'N'}
+    assert G.mconn('Y', {'V'}) == {'W', 'T', 'Z', 'Y', 'X', 'N'}
+    
+def test_msep():
+    grapl_obj = dsl.GraplDSL()
+    grapl_filename = '/grapl/graphs/m_sep_graph.grapl'
+    G = grapl_obj.readgrapl(open(grapl_filename, 'r').read())
+    assert G.ismsep("W", "Y", {"X"})
+    assert G.ismsep("Y", "V", {"X"})
+    assert G.ismsep("W", "Z")
+    assert not G.ismsep("W", "N", {"V"})
+    assert not G.ismsep("W", "T", {"X"})
+    
     
 def test_fixall_greedy():
     grapl_obj = dsl.GraplDSL()
@@ -180,3 +200,4 @@ def test_fixall_full():
     assert not G.isdag()
     assert G.isayclic()
     assert isident
+    
