@@ -47,5 +47,5 @@ Next, invoke the `grapl.algorithms.idfixing` algorithm to find the interventiona
 >>> tests.run_all()
 ```
 
-## Release notes, v1.6.1
+## Release notes, v1.6.2
 - Implementation of m-separation and m-connection algorithms.
